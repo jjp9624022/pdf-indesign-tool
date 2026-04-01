@@ -198,8 +198,65 @@ class ConfigManager:
                 ProviderConfig(**p) if isinstance(p, dict) else p
                 for p in data["providers"]
             ]
-        elif not self.config.providers:
+        else:
             self._set_defaults()
+            self._migrate_old_keys(data)
+
+    def _migrate_old_keys(self, data: Dict):
+        sf_key = data.get("siliconflow_api_key")
+        if sf_key:
+            for p in self.config.providers:
+                if p.id == "siliconflow":
+                    p.api_key = sf_key
+                    break
+
+        vb_key = data.get("volcengine_api_key")
+        if vb_key:
+            for p in self.config.providers:
+                if p.id == "doubao":
+                    p.api_key = vb_key
+                    break
+
+        vb_url = data.get("volcengine_base_url")
+        if vb_url:
+            for p in self.config.providers:
+                if p.id == "doubao":
+                    p.base_url = vb_url
+                    break
+
+        g4f_url = data.get("g4f_base_url")
+        if g4f_url:
+            for p in self.config.providers:
+                if p.id == "g4f":
+                    p.base_url = g4f_url
+                    break
+
+        self._migrate_old_config(data)
+
+    def _migrate_old_config(self, data: Dict):
+        sf_key = data.get("siliconflow_api_key")
+        if sf_key:
+            sf = self.get_provider_by_id("siliconflow")
+            if sf and not sf.api_key:
+                sf.api_key = sf_key
+
+        vb_key = data.get("volcengine_api_key")
+        if vb_key:
+            vb = self.get_provider_by_id("doubao")
+            if vb and not vb.api_key:
+                vb.api_key = vb_key
+
+        vb_url = data.get("volcengine_base_url")
+        if vb_url:
+            vb = self.get_provider_by_id("doubao")
+            if vb and not vb.base_url:
+                vb.base_url = vb_url
+
+        g4f_url = data.get("g4f_base_url")
+        if g4f_url:
+            g4f = self.get_provider_by_id("g4f")
+            if g4f and not g4f.base_url:
+                g4f.base_url = g4f_url
 
     def save(self):
         data = {
