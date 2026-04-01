@@ -251,6 +251,9 @@ class OCRHandler:
                 kwargs["api_key"] = provider.api_key
             if provider.base_url:
                 kwargs["base_url"] = provider.base_url
+            provider_id = provider.id
+        else:
+            provider_id = "siliconflow"
 
         selected_prompt_key = self.prompt_var.get()
         selected_prompt = self.prompt_mgr.get(
@@ -260,13 +263,13 @@ class OCRHandler:
         total = len(boxes)
 
         logger.info(
-            f"[OCR] 开始识别: provider={provider}, model={selected_model}, prompt={selected_prompt_key}, 共 {total} 个框"
+            f"[OCR] 开始识别: provider={provider_id}, model={selected_model}, prompt={selected_prompt_key}, 共 {total} 个框"
         )
 
         def do_ocr():
             try:
                 ocr = ocr_client.OCRClient(
-                    provider=provider, model=selected_model, **kwargs
+                    provider=provider_id, model=selected_model, **kwargs
                 )
                 logger.info(f"[OCR] 初始化 OCR 客户端成功")
 
@@ -362,6 +365,9 @@ class OCRHandler:
                 kwargs["api_key"] = provider.api_key
             if provider.base_url:
                 kwargs["base_url"] = provider.base_url
+            provider_id = provider.id
+        else:
+            provider_id = "siliconflow"
 
         selected_prompt_key = self.prompt_var.get()
         selected_prompt = self.prompt_mgr.get(
@@ -375,7 +381,7 @@ class OCRHandler:
         def do_ocr():
             try:
                 ocr = ocr_client.OCRClient(
-                    provider=provider, model=selected_model, **kwargs
+                    provider=provider_id, model=selected_model, **kwargs
                 )
 
                 if page_img:

@@ -171,7 +171,10 @@ class BoxManager:
         is_current_page = page_index == self.current_page
         is_selected = False
         if is_current_page and self.page_canvas:
-            is_selected = self.page_canvas.selected_box == box
+            if 0 <= box_index < len(self.page_canvas.boxes):
+                is_selected = (
+                    self.page_canvas.selected_box is self.page_canvas.boxes[box_index]
+                )
 
         is_processed = box.get("processed", False)
         is_applied = box.get("applied_to_indesign", False)
@@ -179,12 +182,12 @@ class BoxManager:
         is_recognizing = text == "识别中..."
         is_failed = text.startswith("识别失败")
 
-        if not is_current_page:
-            bg_color = ("gray25", "gray18")
-        elif is_applied:
-            bg_color = ("gray35", "gray25")
-        elif is_selected:
+        if is_selected:
             bg_color = ("#3B8ED0", "#1F6AA5")
+        elif is_applied:
+            bg_color = ("#5B3A8A", "#3D2566")
+        elif not is_current_page:
+            bg_color = ("gray25", "gray18")
         else:
             bg_color = ("gray20", "gray15")
 
