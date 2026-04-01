@@ -1,0 +1,42 @@
+{
+  "ocr_model": {
+    "name": "Qwen2-VL 72B (SiliconFlow)",
+    "provider": "siliconflow",
+    "model_id": "Qwen/Qwen2-VL-72B-Instruct",
+    "is_vision": true
+  },
+  "translation_model": {
+    "name": "DeepSeek V2 (SiliconFlow)",
+    "provider": "siliconflow",
+    "model_id": "deepseek-ai/DeepSeek-V2-Chat",
+    "is_vision": false
+  },
+  "providers": [
+    {
+      "id": "siliconflow",
+      "name": "SiliconFlow",
+      "api_key": "YOUR_SILICONFLOW_API_KEY",
+      "base_url": "",
+      "models": [
+        {"model_id": "deepseek-ai/DeepSeek-OCR", "name": "DeepSeek OCR", "is_vision": true},
+        {"model_id": "PaddlePaddle/PaddleOCR-VL", "name": "PaddleOCR VL", "is_vision": true},
+        {"model_id": "Qwen/Qwen2-VL-72B-Instruct", "name": "Qwen2-VL 72B", "is_vision": true},
+        {"model_id": "Qwen/Qwen2.5-VL-72B-Instruct", "name": "Qwen2.5-VL 72B", "is_vision": true},
+        {"model_id": "deepseek-ai/DeepSeek-V2-Chat", "name": "DeepSeek V2", "is_vision": false}
+      ]
+    },
+    {
+      "id": "doubao",
+      "name": "豆包 (Doubao)",
+      "api_key": "YOUR_DOUBAO_API_KEY",
+      "base_url": "https://ark.cn-beijing.volces.com/api/coding/v3",
+      "models": [
+        {"model_id": "doubao-seed-2-0-mini-260215", "name": "豆包 Seed 2.0 Mini", "is_vision": true},
+        {"model_id": "doubao-seed-1-6-vision-250815", "name": "豆包 Seed 1.6 视觉", "is_vision": true}
+      ]
+    }
+  ],
+  "always_on_top": true,
+  "dock_opacity": 0.9,
+  "target_language": "Chinese"
+}

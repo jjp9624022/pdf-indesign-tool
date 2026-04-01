@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.spec.bak
+.ruff_cache/
+.sisyphus/
+
+# PyInstaller
+PDF-InDesign-Tool/
+PDF-InDesign-Tool.exe
+
+# Secrets & Config
+config.json
+.env
+*.key
+
+# Screenshots & Data
+screenshots/
+screenshots_data.json
+screenshot_dock.log
+
+# Test files
+test_*.py
+test/
+check_rotation2.py
+find_nl.py
+find_slow.py
+
+# Other projects
+screenshot_dock/
+screenshot_dock.py
+启动截屏工具.bat
+
+# Misc
+projects/
+package.json
