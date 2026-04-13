@@ -84,55 +84,30 @@ class OCRHandler:
                 raw_count = len(all_regions)
 
                 def update_ui():
-                    if self.page_canvas:
-                        self.page_canvas.clear_all_boxes()
-
-                    current_regions = [
-                        r for r in merged if r["page"] == self.current_page + 1
-                    ]
-
-                    for region in current_regions:
-                        x1, y1 = region.get("x1", 0), region.get("y1", 0)
-                        x2, y2 = region.get("x2", 0), region.get("y2", 0)
-
+                    by_page = {}
+                    for r in merged:
+                        pg = r["page"]
+                        x1, y1 = r.get("x1", 0), r.get("y1", 0)
+                        x2, y2 = r.get("x2", 0), r.get("y2", 0)
                         if x2 > x1 and y2 > y1:
                             box = {
                                 "x1": x1,
                                 "y1": y1,
                                 "x2": x2,
                                 "y2": y2,
-                                "text": region.get("content", ""),
+                                "text": r.get("content", ""),
                                 "processed": True,
                                 "ocr_source": "rapidocr",
-                                "type": region.get("type", "text"),
+                                "type": r.get("type", "text"),
                             }
-                            if self.page_canvas:
-                                self.page_canvas.boxes.append(box)
-                                vx1, vy1 = self.page_canvas.to_view_coords(x1, y1)
-                                vx2, vy2 = self.page_canvas.to_view_coords(x2, y2)
-                                rect_id = self.pdf_canvas.create_rectangle(
-                                    vx1,
-                                    vy1,
-                                    vx2,
-                                    vy2,
-                                    outline=BOX_COLORS["processed"],
-                                    width=2,
-                                )
-                                box["id"] = rect_id
-                                box["canvas_id"] = rect_id
+                            by_page.setdefault(pg, []).append(box)
+
+                    for pg, boxes in by_page.items():
+                        self.all_boxes[pg - 1] = boxes
 
                     self._save_current_page_boxes()
                     self._update_box_list()
-                    self.all_detected_regions = merged
-                    self.raw_region_count = raw_count
-
-                    if merged:
-                        messagebox.showinfo(
-                            "完成",
-                            f"原始: {raw_count} 个区域\n合并后: {len(merged)} 个区域",
-                        )
-                    else:
-                        messagebox.showinfo("提示", "未检测到文字区域")
+                    self._load_page()
 
                 self.after(0, update_ui)
 

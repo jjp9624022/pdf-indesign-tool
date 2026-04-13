@@ -60,7 +60,6 @@ class UIBuilder:
         )
         self.page_entry.pack(side="left", padx=(10, 3))
         self.page_entry.bind("<Return>", self._on_page_jump)
-        self.page_entry.bind("<FocusOut>", self._on_page_jump)
 
         ctk.CTkButton(
             page_toolbar, text="🔄", command=self.refresh_canvas, width=35
